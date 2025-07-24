@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Award,
   Star,
@@ -21,23 +21,8 @@ import {
   Quote,
 } from "lucide-react";
 
-const About = ({ onNavigate = () => {}, initialSection = "story" }) => {
-  const [activeTab, setActiveTab] = useState(initialSection);
-
-  useEffect(() => {
-    if (initialSection === "story") {
-      setActiveTab("story");
-      setTimeout(() => {
-        const storySection = document.getElementById("story-section");
-        if (storySection) {
-          storySection.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
-      }, 100);
-    }
-  }, [initialSection]);
+const About = () => {
+  const [activeTab, setActiveTab] = useState("story");
 
   // Company milestones and achievements
   const milestones = [
@@ -230,39 +215,6 @@ const About = ({ onNavigate = () => {}, initialSection = "story" }) => {
     { id: "leadership", name: "Leadership", icon: Users },
     { id: "awards", name: "Awards", icon: Trophy },
   ];
-
-  const scrollToStory = () => {
-    const storySection = document.getElementById("story-section");
-    if (storySection) {
-      storySection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
-  useEffect(() => {
-    const handleShowStoryTab = () => {
-      setActiveTab("story");
-      // Use a longer timeout for scrolling
-      setTimeout(scrollToStory, 500);
-    };
-
-    // Listen for the event
-    window.addEventListener("showStoryTab", handleShowStoryTab);
-
-    // Also check if we should show story tab on mount
-    const shouldShowStory =
-      window.location.hash === "#story" ||
-      sessionStorage.getItem("showStoryTab") === "true";
-
-    if (shouldShowStory) {
-      handleShowStoryTab();
-      sessionStorage.removeItem("showStoryTab");
-    }
-
-    return () => window.removeEventListener("showStoryTab", handleShowStoryTab);
-  }, []);
 
   return (
     <div className="min-h-screen bg-white">

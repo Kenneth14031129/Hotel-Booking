@@ -23,7 +23,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-const Homepage = ({ onNavigate = () => {} }) => {
+const Homepage = () => {
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
@@ -340,13 +340,6 @@ const Homepage = ({ onNavigate = () => {} }) => {
                   <div className="text-gray-600">Satisfaction Rate</div>
                 </div>
               </div>
-
-              <button
-                onClick={() => onNavigate("about", { section: "story" })}
-                className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-300 hover:scale-105"
-              >
-                Discover Our Story
-              </button>
             </div>
 
             <div className="relative">
@@ -449,7 +442,10 @@ const Homepage = ({ onNavigate = () => {} }) => {
           </div>
 
           <div className="text-center mt-12">
-            <button className="bg-white border-2 border-amber-600 text-amber-600 px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 hover:text-white transition-all duration-300">
+            <button
+              onClick={() => (window.location.href = "/rooms")}
+              className="bg-white border-2 border-amber-600 text-amber-600 px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 hover:text-white transition-all duration-300"
+            >
               View All Rooms
             </button>
           </div>
@@ -616,14 +612,12 @@ const Homepage = ({ onNavigate = () => {} }) => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <button className="bg-white text-amber-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 flex items-center space-x-2">
+              <button
+                onClick={() => (window.location.href = "/contact")}
+                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-amber-600 transition-all duration-300 flex items-center space-x-2"
+              >
                 <Calendar className="w-5 h-5" />
                 <span>Book Your Stay</span>
-              </button>
-
-              <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-amber-600 transition-all duration-300 flex items-center space-x-2">
-                <Phone className="w-5 h-5" />
-                <span>Call Us Now</span>
               </button>
             </div>
 
@@ -641,103 +635,6 @@ const Homepage = ({ onNavigate = () => {} }) => {
                 <span className="text-sm">Best Rate Guarantee</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery Preview Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-amber-100 text-amber-800 px-4 py-2 rounded-full mb-6">
-              <Camera className="w-4 h-4" />
-              <span className="text-sm font-medium">Visual Experience</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              See Our <span className="text-amber-600">Beautiful Spaces</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Take a virtual tour through our stunning property and get a
-              glimpse of the luxury that awaits you.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 h-96">
-            <div className="lg:col-span-2 lg:row-span-2 relative overflow-hidden rounded-2xl group">
-              <img
-                src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-                alt="Presidential Suite"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-xl font-semibold mb-2">
-                    Presidential Suite
-                  </h3>
-                  <p className="text-sm text-gray-200">
-                    Ultimate luxury experience
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-2xl group">
-              <img
-                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="Restaurant"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="font-semibold">Fine Dining</h3>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-2xl group">
-              <img
-                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="Lobby"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="font-semibold">Grand Lobby</h3>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-2xl group">
-              <img
-                src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="Spa"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="font-semibold">Spa & Wellness</h3>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-2xl group">
-              <img
-                src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="Pool"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="font-semibold">Rooftop Pool</h3>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-300 hover:scale-105">
-              View Full Gallery
-            </button>
           </div>
         </div>
       </section>

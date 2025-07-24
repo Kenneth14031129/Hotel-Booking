@@ -18,6 +18,7 @@ import {
   Shield,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   X,
   Check,
   Grid,
@@ -34,7 +35,6 @@ const Rooms = ({ onNavigate = () => {} }) => {
     guests: "all",
     bedType: "all",
   });
-  const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("price-low");
   const [showFilters, setShowFilters] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
@@ -392,6 +392,26 @@ const Rooms = ({ onNavigate = () => {} }) => {
                 <div className="text-amber-200">Total Rooms</div>
               </div>
             </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+              <button
+                onClick={() => {
+                  const searchSection = document.querySelector(
+                    "section:nth-of-type(2)"
+                  );
+                  if (searchSection) {
+                    searchSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }
+                }}
+                className="group bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-300 hover:scale-105 flex items-center space-x-2"
+              >
+                <span>Discover Our Rooms</span>
+                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -460,29 +480,6 @@ const Rooms = ({ onNavigate = () => {} }) => {
 
             {/* View Toggle and Sort */}
             <div className="flex items-center space-x-3">
-              <div className="flex bg-gray-100 rounded-lg p-1">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded ${
-                    viewMode === "grid"
-                      ? "bg-white shadow-sm"
-                      : "hover:bg-gray-200"
-                  }`}
-                >
-                  <Grid className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 rounded ${
-                    viewMode === "list"
-                      ? "bg-white shadow-sm"
-                      : "hover:bg-gray-200"
-                  }`}
-                >
-                  <List className="w-4 h-4" />
-                </button>
-              </div>
-
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -588,7 +585,7 @@ const Rooms = ({ onNavigate = () => {} }) => {
         </div>
       </section>
 
-      {/* Rooms Grid/List */}
+      {/* Rooms List */}
       <section className="max-w-7xl mx-auto px-4 pb-16">
         {sortedRooms.length === 0 ? (
           <div className="text-center py-16">
@@ -609,26 +606,14 @@ const Rooms = ({ onNavigate = () => {} }) => {
             </button>
           </div>
         ) : (
-          <div
-            className={`grid gap-6 ${
-              viewMode === "grid"
-                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                : "grid-cols-1"
-            }`}
-          >
+          <div className="grid gap-6 grid-cols-1">
             {sortedRooms.map((room) => (
               <div
                 key={room.id}
-                className={`bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
-                  viewMode === "list" ? "flex" : ""
-                }`}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex"
               >
                 {/* Room Image */}
-                <div
-                  className={`relative overflow-hidden ${
-                    viewMode === "list" ? "w-80 flex-shrink-0" : "h-64"
-                  }`}
-                >
+                <div className="w-80 flex-shrink-0 relative overflow-hidden">
                   <img
                     src={room.images[0]}
                     alt={room.name}
@@ -686,7 +671,7 @@ const Rooms = ({ onNavigate = () => {} }) => {
                 </div>
 
                 {/* Room Details */}
-                <div className={`p-6 ${viewMode === "list" ? "flex-1" : ""}`}>
+                <div className="p-6 flex-1">
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="text-xl font-semibold text-gray-900 mb-1">
@@ -867,28 +852,28 @@ const Rooms = ({ onNavigate = () => {} }) => {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
                       <Square className="w-6 h-6 text-amber-600 mx-auto mb-2" />
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm font-semibold">
                         {selectedRoom.size} m²
                       </div>
                       <div className="text-sm text-gray-600">Room Size</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
                       <Users className="w-6 h-6 text-amber-600 mx-auto mb-2" />
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm font-semibold">
                         {selectedRoom.maxGuests}
                       </div>
                       <div className="text-sm text-gray-600">Max Guests</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
                       <Bed className="w-6 h-6 text-amber-600 mx-auto mb-2" />
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm font-semibold">
                         {selectedRoom.bedType}
                       </div>
                       <div className="text-sm text-gray-600">Bed Type</div>
                     </div>
                     <div className="text-center p-4 bg-gray-50 rounded-xl">
                       <Star className="w-6 h-6 text-amber-600 mx-auto mb-2" />
-                      <div className="text-lg font-semibold">
+                      <div className="text-sm font-semibold">
                         {selectedRoom.rating}
                       </div>
                       <div className="text-sm text-gray-600">Rating</div>
@@ -1021,9 +1006,17 @@ const Rooms = ({ onNavigate = () => {} }) => {
                       <button
                         onClick={() => {
                           setSelectedRoom(null);
-                          onNavigate("booking");
+                          onNavigate(
+                            `/booking?roomId=${
+                              selectedRoom.id
+                            }&roomName=${encodeURIComponent(
+                              selectedRoom.name
+                            )}&price=${selectedRoom.price}&roomType=${
+                              selectedRoom.type
+                            }`
+                          );
                         }}
-                        className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors flex items-center justify-center space-x-2"
+                        className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors flex items-center justify-center space-x-2 text-sm"
                       >
                         <Calendar className="w-5 h-5" />
                         <span>Book This Room</span>
@@ -1044,14 +1037,14 @@ const Rooms = ({ onNavigate = () => {} }) => {
                               : ""
                           }`}
                         />
-                        <span>
+                        <span className="text-sm">
                           {favorites.includes(selectedRoom.id)
                             ? "Remove from Favorites"
                             : "Add to Favorites"}
                         </span>
                       </button>
 
-                      <button className="w-full bg-white text-gray-700 py-3 rounded-lg font-semibold border border-gray-300 hover:bg-gray-50 transition-colors">
+                      <button className="w-full bg-white text-gray-700 py-3 rounded-lg font-semibold border border-gray-300 hover:bg-gray-50 transition-colors text-sm">
                         Contact for Questions
                       </button>
                     </div>
