@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Header from "./Components/Header.jsx";
+import Footer from "./Components/Footer.jsx";
 import {
   Award,
   Star,
@@ -218,6 +220,7 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         {/* Background Image */}
@@ -1039,6 +1042,7 @@ const About = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

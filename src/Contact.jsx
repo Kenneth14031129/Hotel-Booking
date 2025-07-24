@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Phone,
   Mail,
@@ -13,14 +13,8 @@ import {
   Shield,
   Globe,
   Headphones,
-  Car,
-  Plane,
-  Building,
-  Heart,
   ChefHat,
   Sparkles,
-  Navigation,
-  ExternalLink,
   Copy,
   Facebook,
   Instagram,
@@ -28,8 +22,10 @@ import {
   Youtube,
   Linkedin,
 } from "lucide-react";
+import Header from "./Components/Header.jsx";
+import Footer from "./Components/Footer.jsx";
 
-const Contact = ({ onNavigate = () => {} }) => {
+const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -108,42 +104,6 @@ const Contact = ({ onNavigate = () => {} }) => {
     },
   ];
 
-  // Quick contact methods
-  const quickContact = [
-    {
-      icon: Phone,
-      title: "Call Us",
-      subtitle: "24/7 Guest Services",
-      value: "+1 (555) 123-4567",
-      action: "tel:+15551234567",
-      color: "from-green-500 to-green-600",
-    },
-    {
-      icon: Mail,
-      title: "Email Us",
-      subtitle: "Quick Response",
-      value: "info@luxuryhotel.com",
-      action: "mailto:info@luxuryhotel.com",
-      color: "from-blue-500 to-blue-600",
-    },
-    {
-      icon: MessageSquare,
-      title: "Live Chat",
-      subtitle: "Instant Support",
-      value: "Chat Now",
-      action: "#",
-      color: "from-purple-500 to-purple-600",
-    },
-    {
-      icon: Calendar,
-      title: "Book Direct",
-      subtitle: "Best Rates Guaranteed",
-      value: "Make Reservation",
-      action: () => onNavigate("booking"),
-      color: "from-amber-500 to-amber-600",
-    },
-  ];
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -179,6 +139,7 @@ const Contact = ({ onNavigate = () => {} }) => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         {/* Background Image */}
@@ -224,43 +185,6 @@ const Contact = ({ onNavigate = () => {} }) => {
                 <span>40+ Languages Supported</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Contact Methods */}
-      <section className="bg-white shadow-lg -mt-8 mx-4 md:mx-8 rounded-2xl relative z-10">
-        <div className="max-w-7xl mx-auto p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickContact.map((contact, index) => (
-              <div key={index} className="group">
-                <div
-                  className="text-center p-6 rounded-xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  onClick={() => {
-                    if (typeof contact.action === "function") {
-                      contact.action();
-                    } else if (contact.action.startsWith("#")) {
-                      // Handle chat or other actions
-                    } else {
-                      window.open(contact.action, "_self");
-                    }
-                  }}
-                >
-                  <div
-                    className={`w-16 h-16 bg-gradient-to-br ${contact.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <contact.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {contact.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-2">
-                    {contact.subtitle}
-                  </p>
-                  <p className="text-amber-600 font-medium">{contact.value}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -459,7 +383,7 @@ const Contact = ({ onNavigate = () => {} }) => {
                   )}
                 </button>
 
-                <p className="text-sm text-gray-500 text-center">
+                <p className="text-xs text-gray-500 text-center">
                   By submitting this form, you agree to our privacy policy.
                   We'll respond within 15 minutes during business hours.
                 </p>
@@ -641,6 +565,7 @@ const Contact = ({ onNavigate = () => {} }) => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

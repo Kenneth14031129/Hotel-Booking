@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Header from "./Components/Header.jsx";
+import Footer from "./Components/Footer.jsx";
 import {
   Calendar,
   Users,
@@ -12,7 +14,6 @@ import {
   MapPin,
   Phone,
   Check,
-  Play,
   X,
   ChevronLeft,
   ChevronRight,
@@ -29,7 +30,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const Events = ({ onNavigate = () => {} }) => {
+const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -319,6 +320,7 @@ const Events = ({ onNavigate = () => {} }) => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         {/* Background Image */}
@@ -1057,6 +1059,7 @@ const Events = ({ onNavigate = () => {} }) => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

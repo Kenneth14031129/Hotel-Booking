@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Header from "./Components/Header.jsx";
+import Footer from "./Components/Footer.jsx";
 import {
   Utensils,
   Wine,
@@ -11,7 +13,6 @@ import {
   Users,
   ChefHat,
   Globe,
-  Play,
   X,
   ChevronLeft,
   ChevronRight,
@@ -21,7 +22,7 @@ import {
   Gift,
 } from "lucide-react";
 
-const Dining = ({ onNavigate = () => {} }) => {
+const Dining = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -298,6 +299,7 @@ const Dining = ({ onNavigate = () => {} }) => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         {/* Background Image */}
@@ -1113,6 +1115,7 @@ const Dining = ({ onNavigate = () => {} }) => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 };

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../Components/Header.jsx";
+import Footer from "../Components/Footer.jsx";
 import {
   Search,
   Users,
@@ -18,13 +21,20 @@ import {
   Shield,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
   X,
   Check,
-  Grid,
-  List,
   SlidersHorizontal,
 } from "lucide-react";
+
+function RoomsWrapper() {
+  const navigate = useNavigate();
+
+  const handleNavigate = (page) => {
+    navigate(`/${page}`);
+  };
+
+  return <Rooms onNavigate={handleNavigate} />;
+}
 
 const Rooms = ({ onNavigate = () => {} }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -347,6 +357,7 @@ const Rooms = ({ onNavigate = () => {} }) => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         {/* Background Image */}
@@ -391,26 +402,6 @@ const Rooms = ({ onNavigate = () => {} }) => {
                 <div className="text-3xl font-bold text-white">150+</div>
                 <div className="text-amber-200">Total Rooms</div>
               </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-              <button
-                onClick={() => {
-                  const searchSection = document.querySelector(
-                    "section:nth-of-type(2)"
-                  );
-                  if (searchSection) {
-                    searchSection.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                  }
-                }}
-                className="group bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-300 hover:scale-105 flex items-center space-x-2"
-              >
-                <span>Discover Our Rooms</span>
-                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-              </button>
             </div>
           </div>
         </div>
@@ -755,7 +746,7 @@ const Rooms = ({ onNavigate = () => {} }) => {
                         View Details
                       </button>
                       <button
-                        onClick={() => onNavigate("booking")}
+                        onClick={() => onNavigate("booking-rooms")}
                         className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors text-sm font-medium"
                       >
                         Book Now
@@ -1006,15 +997,7 @@ const Rooms = ({ onNavigate = () => {} }) => {
                       <button
                         onClick={() => {
                           setSelectedRoom(null);
-                          onNavigate(
-                            `/booking?roomId=${
-                              selectedRoom.id
-                            }&roomName=${encodeURIComponent(
-                              selectedRoom.name
-                            )}&price=${selectedRoom.price}&roomType=${
-                              selectedRoom.type
-                            }`
-                          );
+                          onNavigate("booking-rooms");
                         }}
                         className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors flex items-center justify-center space-x-2 text-sm"
                       >
@@ -1042,10 +1025,6 @@ const Rooms = ({ onNavigate = () => {} }) => {
                             ? "Remove from Favorites"
                             : "Add to Favorites"}
                         </span>
-                      </button>
-
-                      <button className="w-full bg-white text-gray-700 py-3 rounded-lg font-semibold border border-gray-300 hover:bg-gray-50 transition-colors text-sm">
-                        Contact for Questions
                       </button>
                     </div>
 
@@ -1116,8 +1095,9 @@ const Rooms = ({ onNavigate = () => {} }) => {
           </div>
         </section>
       )}
+      <Footer />
     </div>
   );
 };
 
-export default Rooms;
+export default RoomsWrapper;

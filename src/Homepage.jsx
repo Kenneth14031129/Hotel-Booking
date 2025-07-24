@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import Header from "./Components/Header.jsx";
+import Footer from "./Components/Footer.jsx";
 import {
   Calendar,
   Users,
-  MapPin,
   Star,
   Wifi,
   Car,
@@ -13,18 +14,16 @@ import {
   Shield,
   Award,
   Clock,
-  Phone,
   ChevronLeft,
   ChevronRight,
   Check,
   Sparkles,
   Heart,
-  Camera,
   ChevronDown,
 } from "lucide-react";
 
 const Homepage = () => {
-  const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+  const [currentHeroSlide] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   // Hero slides data
@@ -156,16 +155,6 @@ const Homepage = () => {
     },
   ];
 
-  const scrollToWelcome = () => {
-    const welcomeSection = document.getElementById("welcome-section");
-    if (welcomeSection) {
-      welcomeSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
-
   // Auto-slide testimonials
   useEffect(() => {
     const interval = setInterval(() => {
@@ -176,6 +165,7 @@ const Homepage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden">
         {/* Background Images */}
@@ -191,7 +181,8 @@ const Homepage = () => {
               alt={slide.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/40"></div>
+            <div className="absolute inset-0 bg-black/60"></div>
+            <div className="absolute inset-0"></div>
           </div>
         ))}
 
@@ -211,89 +202,12 @@ const Homepage = () => {
             <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto">
               {heroSlides[currentHeroSlide].subtitle}
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button
-                onClick={scrollToWelcome}
-                className="group bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-300 hover:scale-105 flex items-center space-x-2"
-              >
-                <span>{heroSlides[currentHeroSlide].cta}</span>
-                <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Navigation Dots */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentHeroSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentHeroSlide
-                  ? "bg-white scale-125"
-                  : "bg-white/50 hover:bg-white/75"
-              }`}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Quick Booking Section */}
-      <section className="bg-white py-8 shadow-lg -mt-20 relative z-20 mx-4 md:mx-8 rounded-2xl">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Check In
-              </label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="date"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Check Out
-              </label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="date"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Guests
-              </label>
-              <div className="relative">
-                <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
-                  <option>1 Guest</option>
-                  <option>2 Guests</option>
-                  <option>3 Guests</option>
-                  <option>4+ Guests</option>
-                </select>
-              </div>
-            </div>
-
-            <button className="bg-gradient-to-r from-amber-600 to-amber-700 text-white px-8 py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-300 hover:scale-105">
-              Check Availability
-            </button>
           </div>
         </div>
       </section>
 
       {/* Welcome Section */}
-      <section id="welcome-section" className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -695,6 +609,7 @@ const Homepage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

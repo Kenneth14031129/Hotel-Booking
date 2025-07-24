@@ -1,70 +1,48 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import Header from "./Components/Header.jsx";
-import Footer from "./Components/Footer.jsx";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Error from "./Components/Error.jsx";
 import Loading from "./Components/Loading.jsx";
 import Homepage from "./Homepage.jsx";
 import Rooms from "./BookingRooms/Rooms.jsx";
-import Amenities from "./Amenities.jsx";
+import Amenities from "./BookingAmenities/Amenities.jsx";
 import Dining from "./Dining.jsx";
 import Events from "./Events.jsx";
 import About from "./About.jsx";
 import Contact from "./Contact.jsx";
-import Booking from "./BookingRooms/Booking.jsx";
+import BookingRooms from "./BookingRooms/BookingRooms.jsx";
+import BookingAmenities from "./BookingAmenities/BookingAmenities.jsx";
 
-function HomepageWrapper() {
-  const navigate = useNavigate();
+function ScrollToTop() {
+  const { pathname } = useLocation();
 
-  const handleNavigate = (page, options = {}) => {
-    if (page === "about" && options.section) {
-      navigate(`/about?section=${options.section}`);
-    } else {
-      navigate(`/${page}`);
-    }
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-  return <Homepage onNavigate={handleNavigate} />;
-}
-
-// Create a wrapper component for About
-function AboutWrapper() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const section = searchParams.get("section") || "story";
-
-  const handleNavigate = (page, options = {}) => {
-    if (page === "about" && options.section) {
-      navigate(`/about?section=${options.section}`);
-    } else {
-      navigate(`/${page}`);
-    }
-  };
-
-  return <About onNavigate={handleNavigate} initialSection={section} />;
+  return null;
 }
 
 export default function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
-        <Header />
+        <ScrollToTop />
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<HomepageWrapper />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/rooms" element={<Rooms />} />
             <Route path="/amenities" element={<Amenities />} />
             <Route path="/events" element={<Events />} />
             <Route path="/about" element={<About />} />
             <Route path="/dining" element={<Dining />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/booking" element={<Booking />} />
+            <Route path="/booking-rooms" element={<BookingRooms />} />
+            <Route path="/booking-amenities" element={<BookingAmenities />} />
             <Route path="/loading" element={<Loading />} />
             <Route path="/error" element={<Error />} />
             <Route path="*" element={<Error type="404" />} />
           </Routes>
         </main>
-        <Footer />
       </div>
     </BrowserRouter>
   );

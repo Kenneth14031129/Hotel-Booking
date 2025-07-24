@@ -20,25 +20,13 @@ import {
 
 const Footer = () => {
   const quickLinks = [
-    { name: "About Us", href: "#about" },
-    { name: "Our Rooms", href: "#rooms" },
-    { name: "Amenities", href: "#amenities" },
-    { name: "Dining", href: "#dining" },
-    { name: "Events & Meetings", href: "#events" },
-    { name: "Special Offers", href: "#offers" },
-    { name: "Gallery", href: "#gallery" },
-    { name: "Reviews", href: "#reviews" },
-  ];
-
-  const services = [
-    { name: "Room Service", href: "#room-service" },
-    { name: "Concierge", href: "#concierge" },
-    { name: "Spa & Wellness", href: "#spa" },
-    { name: "Business Center", href: "#business" },
-    { name: "Airport Transfer", href: "#transfer" },
-    { name: "Tour Packages", href: "#tours" },
-    { name: "Car Rental", href: "#car-rental" },
-    { name: "Laundry Service", href: "#laundry" },
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "/about" },
+    { name: "Our Rooms", href: "/rooms" },
+    { name: "Amenities", href: "/amenities" },
+    { name: "Dining", href: "/dining" },
+    { name: "Events & Meetings", href: "/events" },
+    { name: "Contact", href: "/contact" },
   ];
 
   const policies = [
@@ -128,27 +116,6 @@ const Footer = () => {
                       className="mr-2 group-hover:translate-x-1 transition-transform duration-300"
                     />
                     {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Services</h3>
-            <ul className="space-y-3">
-              {services.map((service, index) => (
-                <li key={index}>
-                  <a
-                    href={service.href}
-                    className="flex items-center text-gray-300 hover:text-amber-400 transition-colors duration-300 group"
-                  >
-                    <ChevronRight
-                      size={14}
-                      className="mr-2 group-hover:translate-x-1 transition-transform duration-300"
-                    />
-                    {service.name}
                   </a>
                 </li>
               ))}

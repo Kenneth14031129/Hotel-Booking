@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import {
   Calendar,
   Users,
@@ -14,23 +14,33 @@ import {
   Clock,
   ArrowLeft,
   ChevronRight,
-  Bed,
-  Square,
   Wifi,
-  Car,
-  Coffee,
   AlertCircle,
+  Waves,
+  Dumbbell,
+  Baby,
+  Sparkles,
 } from "lucide-react";
 
-const Booking = ({ onNavigate = () => {} }) => {
+function BookingAmenitiesWrapper() {
+  const navigate = useNavigate();
+
+  const handleNavigate = (page) => {
+    navigate(`/${page}`);
+  };
+
+  return <BookingAmenities onNavigate={handleNavigate} />;
+}
+
+const BookingAmenities = ({ onNavigate = () => {} }) => {
   const [searchParams] = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [bookingData, setBookingData] = useState({
-    // Dates
-    checkIn: "",
-    checkOut: "",
-    guests: 2,
-    nights: 0,
+    // Service Details
+    serviceDate: "",
+    serviceTime: "",
+    duration: "",
+    guests: 1,
 
     // Guest Info
     firstName: "",
@@ -50,41 +60,43 @@ const Booking = ({ onNavigate = () => {} }) => {
     zipCode: "",
 
     // Preferences
-    arrivalTime: "",
-    bedPreference: "",
     newsletter: false,
   });
 
-  // Sample room data (in real app, this would come from props or API)
-  const selectedRoom = {
-    id: searchParams.get("roomId") || "1",
-    name: searchParams.get("roomName") || "Deluxe King Room",
-    price: parseInt(searchParams.get("price")) || 299,
-    type: searchParams.get("roomType") || "deluxe",
+  // Get amenity data from URL params or default
+  const selectedAmenity = {
+    id: searchParams.get("amenityId") || "1",
+    name: searchParams.get("amenityName") || "Luxury Spa & Wellness Center",
+    category: searchParams.get("category") || "wellness",
+    price: parseInt(searchParams.get("price")) || 150,
+    duration: searchParams.get("duration") || "90 minutes",
     image:
-      "https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    size: 32,
-    maxGuests: 2,
-    amenities: [
-      { icon: Wifi, name: "Free WiFi" },
-      { icon: Car, name: "Valet Parking" },
-      { icon: Coffee, name: "Coffee Machine" },
-      { icon: Shield, name: "Room Safe" },
+      "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+    icon: getAmenityIcon(searchParams.get("category") || "wellness"),
+    features: [
+      "Professional therapist",
+      "Premium products",
+      "Relaxation area access",
+      "Complimentary refreshments",
     ],
-    rating: 4.8,
-    view: "City View",
+    rating: 4.9,
+    hours: "6:00 AM - 10:00 PM",
+    description:
+      "Indulge in our signature spa treatments designed to rejuvenate your body and mind.",
   };
 
-  // Calculate nights when dates change
-  useEffect(() => {
-    if (bookingData.checkIn && bookingData.checkOut) {
-      const checkIn = new Date(bookingData.checkIn);
-      const checkOut = new Date(bookingData.checkOut);
-      const timeDiff = checkOut.getTime() - checkIn.getTime();
-      const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      setBookingData((prev) => ({ ...prev, nights: nights > 0 ? nights : 0 }));
-    }
-  }, [bookingData.checkIn, bookingData.checkOut]);
+  // Icon mapping function
+  function getAmenityIcon(category) {
+    const iconMap = {
+      wellness: Waves,
+      recreation: Dumbbell,
+      services: Shield,
+      family: Baby,
+      technology: Wifi,
+      default: Sparkles,
+    };
+    return iconMap[category] || iconMap.default;
+  }
 
   const handleInputChange = (field, value) => {
     setBookingData((prev) => ({ ...prev, [field]: value }));
@@ -103,9 +115,7 @@ const Booking = ({ onNavigate = () => {} }) => {
   };
 
   const validateStep1 = () => {
-    return (
-      bookingData.checkIn && bookingData.checkOut && bookingData.nights > 0
-    );
+    return bookingData.serviceDate && bookingData.serviceTime;
   };
 
   const validateStep2 = () => {
@@ -118,19 +128,20 @@ const Booking = ({ onNavigate = () => {} }) => {
   };
 
   const handleBooking = () => {
-    // Here you would normally process the booking
-    alert("Booking confirmed! Thank you for choosing our hotel.");
-    onNavigate("/");
+    alert(
+      `${selectedAmenity.name} booking confirmed! We'll send you a confirmation email shortly.`
+    );
+    onNavigate("amenities");
   };
 
   // Calculate pricing
-  const roomTotal = selectedRoom.price * bookingData.nights;
-  const taxes = Math.round(roomTotal * 0.12);
-  const serviceFee = 25;
-  const totalPrice = roomTotal + taxes + serviceFee;
+  const servicePrice = selectedAmenity.price;
+  const taxes = Math.round(servicePrice * 0.08);
+  const serviceFee = 15;
+  const totalPrice = servicePrice + taxes + serviceFee;
 
   const steps = [
-    { number: 1, title: "Dates & Guests", icon: Calendar },
+    { number: 1, title: "Service Details", icon: Calendar },
     { number: 2, title: "Guest Details", icon: User },
     { number: 3, title: "Payment", icon: CreditCard },
   ];
@@ -142,15 +153,15 @@ const Booking = ({ onNavigate = () => {} }) => {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <button
-              onClick={() => onNavigate("/rooms")}
+              onClick={() => onNavigate("amenities")}
               className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Back to Rooms</span>
+              <span>Back to Amenities</span>
             </button>
 
             <h1 className="text-2xl font-bold text-gray-900">
-              Complete Your Booking
+              Book Your Service
             </h1>
 
             <div className="flex items-center space-x-2 text-green-600">
@@ -206,26 +217,26 @@ const Booking = ({ onNavigate = () => {} }) => {
           {/* Main Content */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              {/* Step 1: Dates & Guests */}
+              {/* Step 1: Service Details */}
               {currentStep === 1 && (
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    Select Your Dates
+                    Select Your Service Time
                   </h2>
 
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Check-in Date
+                          Preferred Date
                         </label>
                         <div className="relative">
                           <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                           <input
                             type="date"
-                            value={bookingData.checkIn}
+                            value={bookingData.serviceDate}
                             onChange={(e) =>
-                              handleInputChange("checkIn", e.target.value)
+                              handleInputChange("serviceDate", e.target.value)
                             }
                             min={new Date().toISOString().split("T")[0]}
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
@@ -235,22 +246,29 @@ const Booking = ({ onNavigate = () => {} }) => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Check-out Date
+                          Preferred Time
                         </label>
                         <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                          <input
-                            type="date"
-                            value={bookingData.checkOut}
+                          <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                          <select
+                            value={bookingData.serviceTime}
                             onChange={(e) =>
-                              handleInputChange("checkOut", e.target.value)
-                            }
-                            min={
-                              bookingData.checkIn ||
-                              new Date().toISOString().split("T")[0]
+                              handleInputChange("serviceTime", e.target.value)
                             }
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-                          />
+                          >
+                            <option value="">Select time</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -272,50 +290,46 @@ const Booking = ({ onNavigate = () => {} }) => {
                             }
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                           >
-                            <option value={1}>1 Guest</option>
-                            <option value={2}>2 Guests</option>
-                            <option value={3}>3 Guests</option>
-                            <option value={4}>4 Guests</option>
+                            <option value={1}>1 Person</option>
+                            <option value={2}>2 People</option>
+                            <option value={3}>3 People</option>
+                            <option value={4}>4 People</option>
                           </select>
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Estimated Arrival Time
+                          Service Duration
                         </label>
                         <div className="relative">
                           <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                           <select
-                            value={bookingData.arrivalTime}
+                            value={bookingData.duration}
                             onChange={(e) =>
-                              handleInputChange("arrivalTime", e.target.value)
+                              handleInputChange("duration", e.target.value)
                             }
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                           >
-                            <option value="">Select arrival time</option>
-                            <option value="morning">
-                              Morning (6AM - 12PM)
-                            </option>
-                            <option value="afternoon">
-                              Afternoon (12PM - 6PM)
-                            </option>
-                            <option value="evening">
-                              Evening (6PM - 10PM)
-                            </option>
-                            <option value="late">Late (After 10PM)</option>
+                            <option value="">Select duration</option>
+                            <option value="60">60 minutes - $120</option>
+                            <option value="90">90 minutes - $150</option>
+                            <option value="120">120 minutes - $180</option>
                           </select>
                         </div>
                       </div>
                     </div>
 
-                    {bookingData.nights > 0 && (
+                    {bookingData.serviceDate && bookingData.serviceTime && (
                       <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                         <div className="flex items-center space-x-2">
                           <Check className="w-5 h-5 text-amber-600" />
                           <span className="text-amber-800 font-medium">
-                            {bookingData.nights} night
-                            {bookingData.nights > 1 ? "s" : ""} selected
+                            Service scheduled for{" "}
+                            {new Date(
+                              bookingData.serviceDate
+                            ).toLocaleDateString()}{" "}
+                            at {bookingData.serviceTime}
                           </span>
                         </div>
                       </div>
@@ -447,7 +461,7 @@ const Booking = ({ onNavigate = () => {} }) => {
                         }
                         rows={3}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-                        placeholder="Any special requests or dietary requirements..."
+                        placeholder="Any specific preferences or requirements..."
                       />
                     </div>
 
@@ -578,7 +592,6 @@ const Booking = ({ onNavigate = () => {} }) => {
                       <h4 className="font-medium text-gray-900 mb-4">
                         Billing Address
                       </h4>
-
                       <div className="space-y-4">
                         <input
                           type="text"
@@ -589,7 +602,6 @@ const Booking = ({ onNavigate = () => {} }) => {
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                           placeholder="Street Address"
                         />
-
                         <div className="grid grid-cols-2 gap-4">
                           <input
                             type="text"
@@ -626,7 +638,7 @@ const Booking = ({ onNavigate = () => {} }) => {
                       className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center space-x-2"
                     >
                       <Shield className="w-5 h-5" />
-                      <span>Complete Booking - ${totalPrice}</span>
+                      <span>Book Service - ${totalPrice}</span>
                     </button>
                   </div>
                 </div>
@@ -638,76 +650,77 @@ const Booking = ({ onNavigate = () => {} }) => {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-6">
               <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Booking Summary
+                Service Summary
               </h3>
 
-              {/* Room Details */}
+              {/* Service Details */}
               <div className="border-b border-gray-200 pb-4 mb-4">
                 <img
-                  src={selectedRoom.image}
-                  alt={selectedRoom.name}
+                  src={selectedAmenity.image}
+                  alt={selectedAmenity.name}
                   className="w-full h-32 object-cover rounded-lg mb-3"
                 />
-                <h4 className="font-semibold text-gray-900">
-                  {selectedRoom.name}
-                </h4>
-                <p className="text-sm text-gray-600 mb-2">
-                  {selectedRoom.view}
-                </p>
 
-                <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
-                  <div className="flex items-center space-x-1">
-                    <Square className="w-4 h-4" />
-                    <span>{selectedRoom.size}m²</span>
+                <div className="flex items-start space-x-3 mb-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center">
+                    <selectedAmenity.icon className="w-5 h-5 text-white" />
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Bed className="w-4 h-4" />
-                    <span>King Bed</span>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900">
+                      {selectedAmenity.name}
+                    </h4>
+                    <p className="text-sm text-gray-600 capitalize">
+                      {selectedAmenity.category} Service
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-1 mb-3">
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   <span className="text-sm font-medium">
-                    {selectedRoom.rating}
+                    {selectedAmenity.rating}
                   </span>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {selectedRoom.amenities.slice(0, 2).map((amenity, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded text-xs"
-                    >
-                      <amenity.icon className="w-3 h-3" />
-                      <span>{amenity.name}</span>
-                    </div>
-                  ))}
+                  {selectedAmenity.features
+                    .slice(0, 2)
+                    .map((feature, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded text-xs"
+                      >
+                        <Check className="w-3 h-3 text-green-600" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
                 </div>
               </div>
 
-              {/* Stay Details */}
-              {bookingData.checkIn && bookingData.checkOut && (
+              {/* Service Details */}
+              {bookingData.serviceDate && bookingData.serviceTime && (
                 <div className="border-b border-gray-200 pb-4 mb-4">
                   <h5 className="font-medium text-gray-900 mb-2">
-                    Stay Details
+                    Service Details
                   </h5>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Check-in:</span>
+                      <span className="text-gray-600">Date:</span>
                       <span className="font-medium">
-                        {new Date(bookingData.checkIn).toLocaleDateString()}
+                        {new Date(bookingData.serviceDate).toLocaleDateString()}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Check-out:</span>
+                      <span className="text-gray-600">Time:</span>
                       <span className="font-medium">
-                        {new Date(bookingData.checkOut).toLocaleDateString()}
+                        {bookingData.serviceTime}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Nights:</span>
-                      <span className="font-medium">{bookingData.nights}</span>
+                      <span className="text-gray-600">Duration:</span>
+                      <span className="font-medium">
+                        {selectedAmenity.duration}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Guests:</span>
@@ -718,46 +731,52 @@ const Booking = ({ onNavigate = () => {} }) => {
               )}
 
               {/* Price Breakdown */}
-              {bookingData.nights > 0 && (
-                <div className="space-y-3">
-                  <h5 className="font-medium text-gray-900">Price Breakdown</h5>
-
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">
-                        ${selectedRoom.price} × {bookingData.nights} nights
-                      </span>
-                      <span>${roomTotal}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Taxes & fees</span>
-                      <span>${taxes}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Service fee</span>
-                      <span>${serviceFee}</span>
-                    </div>
+              <div className="space-y-3">
+                <h5 className="font-medium text-gray-900">Price Breakdown</h5>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Service fee</span>
+                    <span>${servicePrice}</span>
                   </div>
-
-                  <div className="border-t border-gray-200 pt-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg font-bold text-gray-900">
-                        Total
-                      </span>
-                      <span className="text-2xl font-bold text-amber-600">
-                        ${totalPrice}
-                      </span>
-                    </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Taxes & fees</span>
+                    <span>${taxes}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Booking fee</span>
+                    <span>${serviceFee}</span>
                   </div>
                 </div>
-              )}
+
+                <div className="border-t border-gray-200 pt-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-gray-900">
+                      Total
+                    </span>
+                    <span className="text-2xl font-bold text-amber-600">
+                      ${totalPrice}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Operating Hours */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h5 className="font-medium text-gray-900 mb-2">
+                  Operating Hours
+                </h5>
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Clock className="w-4 h-4" />
+                  <span>{selectedAmenity.hours}</span>
+                </div>
+              </div>
 
               {/* Trust Indicators */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="space-y-3 text-sm text-gray-600">
                   <div className="flex items-center space-x-2">
                     <Check className="w-4 h-4 text-green-500" />
-                    <span>Free cancellation until 24h</span>
+                    <span>Professional service guaranteed</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Shield className="w-4 h-4 text-green-500" />
@@ -765,7 +784,7 @@ const Booking = ({ onNavigate = () => {} }) => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Clock className="w-4 h-4 text-green-500" />
-                    <span>Instant confirmation</span>
+                    <span>Free cancellation until 2 hours before</span>
                   </div>
                 </div>
               </div>
@@ -774,7 +793,7 @@ const Booking = ({ onNavigate = () => {} }) => {
               <div className="mt-6 p-4 bg-amber-50 rounded-lg">
                 <h6 className="font-medium text-amber-800 mb-2">Need Help?</h6>
                 <p className="text-sm text-amber-700 mb-3">
-                  Our customer service team is available 24/7 to assist you.
+                  Our concierge team is available 24/7 to assist you.
                 </p>
                 <div className="flex items-center space-x-4 text-sm">
                   <div className="flex items-center space-x-1 text-amber-700">
@@ -783,7 +802,7 @@ const Booking = ({ onNavigate = () => {} }) => {
                   </div>
                   <div className="flex items-center space-x-1 text-amber-700">
                     <Mail className="w-4 h-4" />
-                    <span>help@hotel.com</span>
+                    <span>concierge@hotel.com</span>
                   </div>
                 </div>
               </div>
@@ -792,13 +811,13 @@ const Booking = ({ onNavigate = () => {} }) => {
         </div>
       </div>
 
-      {/* Mobile Bottom Bar (for mobile checkout) */}
+      {/* Mobile Bottom Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm text-gray-600">Total</div>
             <div className="text-lg font-bold text-amber-600">
-              ${bookingData.nights > 0 ? totalPrice : selectedRoom.price}
+              ${totalPrice}
             </div>
           </div>
 
@@ -834,7 +853,7 @@ const Booking = ({ onNavigate = () => {} }) => {
         </div>
       </div>
 
-      {/* Terms and Conditions Modal (optional) */}
+      {/* Important Information */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="bg-gray-50 rounded-lg p-6">
           <h4 className="font-medium text-gray-900 mb-3">
@@ -843,21 +862,24 @@ const Booking = ({ onNavigate = () => {} }) => {
           <div className="space-y-2 text-sm text-gray-600">
             <div className="flex items-start space-x-2">
               <AlertCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-              <p>Check-in time is 3:00 PM and check-out time is 11:00 AM.</p>
+              <p>Please arrive 15 minutes early for your appointment.</p>
             </div>
             <div className="flex items-start space-x-2">
               <AlertCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
               <p>
-                Free cancellation is available until 24 hours before check-in.
+                Free cancellation is available until 2 hours before your service
+                time.
               </p>
             </div>
             <div className="flex items-start space-x-2">
               <AlertCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-              <p>Valid photo ID and credit card required at check-in.</p>
+              <p>Valid photo ID required for spa and wellness services.</p>
             </div>
             <div className="flex items-start space-x-2">
               <AlertCircle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-              <p>Smoking is not permitted in any room or indoor area.</p>
+              <p>
+                Service prices may vary based on selected duration and add-ons.
+              </p>
             </div>
           </div>
 
@@ -871,8 +893,8 @@ const Booking = ({ onNavigate = () => {} }) => {
               <button className="text-amber-600 hover:underline">
                 Privacy Policy
               </button>
-              . All rates are subject to availability and may change without
-              notice.
+              . All service rates are subject to availability and may change
+              without notice.
             </p>
           </div>
         </div>
@@ -881,4 +903,4 @@ const Booking = ({ onNavigate = () => {} }) => {
   );
 };
 
-export default Booking;
+export default BookingAmenitiesWrapper;
