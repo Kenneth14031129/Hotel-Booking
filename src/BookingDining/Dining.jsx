@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Header from "./Components/Header.jsx";
-import Footer from "./Components/Footer.jsx";
+import Header from "../Components/Header.jsx";
+import Footer from "../Components/Footer.jsx";
 import {
   Utensils,
   Wine,

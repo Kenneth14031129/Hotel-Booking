@@ -54,26 +54,7 @@ const Amenities = () => {
       premium: true,
       rating: 4.9,
     },
-    {
-      id: 2,
-      category: "wellness",
-      icon: Bath,
-      name: "Infinity Pool & Hot Tub",
-      description:
-        "Rooftop infinity pool with panoramic city views and therapeutic hot tub",
-      features: [
-        "Infinity edge pool",
-        "Heated hot tub",
-        "Poolside service",
-        "City views",
-        "Poolside bar",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-      hours: "5:00 AM - 11:00 PM",
-      premium: true,
-      rating: 4.8,
-    },
+
     {
       id: 3,
       category: "recreation",

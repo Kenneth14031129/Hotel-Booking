@@ -5,7 +5,7 @@ import Loading from "./Components/Loading.jsx";
 import Homepage from "./Homepage.jsx";
 import Rooms from "./BookingRooms/Rooms.jsx";
 import Amenities from "./BookingAmenities/Amenities.jsx";
-import Dining from "./Dining.jsx";
+import Dining from "./BookingDining/Dining.jsx";
 import Events from "./Events.jsx";
 import About from "./About.jsx";
 import Contact from "./Contact.jsx";
